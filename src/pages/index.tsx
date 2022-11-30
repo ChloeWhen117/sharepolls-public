@@ -12,6 +12,30 @@ const exampleOptions = [
   {id: 4, value: "Option D"}
 ]
 
+interface PollOptionsProps {
+  options: { id: number; value: string; }[]
+}
+
+const PollOptions = ({options}: PollOptionsProps ) => {
+  return (
+    <>
+      {  options.length > 0 && (
+        options.map((option, i) => {
+          return <label 
+                      className="flex justify-between items-center max-w-2xl text-white gap-2"
+                      key={option.id}>
+                      <input 
+                        type="radio" 
+                        name="poll"
+                        value={option.value} 
+                      />
+                      {option.value}
+                  </label>
+      }))}
+    </>
+  )  
+}
+
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const options = exampleOptions;
@@ -23,26 +47,17 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] p-4">
             Share Polls
-          </h1>
+        </h1>
+        <div className="container flex flex-col items-center justify-center gap-12 p-4 bg-white/10">
           <div className="flex" >
-            <div className="text-2xl text-center  text-white pt-8">Insert Poll Question</div>
+            <div className="text-2xl text-center text-white pt-8">Insert Poll Question</div>
           </div>
-          <div className="flex flex-col items-center">
-            {options.length > 0 && (
-              options.map((option, i) => {
-                return <label 
-                            className="flex justify-between items-center max-w-2xl text-white gap-2"
-                            key={option.id}>
-                            <input type="radio" 
-                                value={option.value} 
-                            />
-                            {option.value}
-                        </label>
-                })
-            )}
+          <div className="flex max-w-2xl items-left ">
+            <div className="flex flex-col flex-start">
+              <PollOptions options={options} />
+            </div>
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
@@ -50,37 +65,37 @@ const Home: NextPage = () => {
             </p>
             <AuthShowcase />
           </div>
-          <div id="linksFooter" className="max-w-ws flex text-xl text-center pb-2">
-            <Link 
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="/https://github.com/ChloeWhen117/sharecattv"
-            >
-              <div>Github</div>
-            </Link>
-            <span className="p-4">{"-"}</span>
-            <Link 
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="/results"
-            >
-              <div>Results</div>
-            </Link>
-            <span className="p-4">{"-"}</span>
-            <Link 
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="/about"
-            >
-              <div>About</div>
-            </Link>
-          </div>
         </div>
       </main>
+      <footer id="linksFooter" className="max-w-ws flex text-xl text-center item-center justify-center p-2 bg-[#15162c]">
+          <Link 
+            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+            href="/https://github.com/ChloeWhen117/sharecattv"
+          >
+            <div>Github</div>
+          </Link>
+          <span className="p-4">{"-"}</span>
+          <Link 
+            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+            href="/results"
+          >
+            <div>Results</div>
+          </Link>
+          <span className="p-4">{"-"}</span>
+          <Link 
+            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+            href="/about"
+          >
+            <div>About</div>
+          </Link>
+      </footer>
     </>
   );
 };
 
 export default Home;
 
-const AuthShowcase: React.FC = () => {
+const AuthShowcase = () => {
   const { data: sessionData } = useSession();
 
   const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery(
@@ -89,7 +104,7 @@ const AuthShowcase: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className="flex flex-col items-center justify-center gap-4 ">
       <p className="text-center text-2xl text-white">
         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
         {secretMessage && <span> - {secretMessage}</span>}
