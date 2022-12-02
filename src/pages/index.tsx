@@ -67,21 +67,19 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
-      <footer id="linksFooter" className="max-w-ws flex text-xl text-center item-center justify-center p-2 bg-[#15162c]">
+      <footer id="linksFooter" className="max-w-ws flex text-xl text-center item-center justify-center p-2 gap-4 bg-[#15162c]">
           <Link 
             className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="/https://github.com/ChloeWhen117/sharecattv"
           >
             <div>Github</div>
           </Link>
-          <span className="p-4">{"-"}</span>
           <Link 
             className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="/results"
           >
             <div>Results</div>
           </Link>
-          <span className="p-4">{"-"}</span>
           <Link 
             className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="/about"
