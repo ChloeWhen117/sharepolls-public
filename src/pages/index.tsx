@@ -4,6 +4,7 @@ import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { trpc } from "../utils/trpc";
+import { PollOptions } from "./components/PollOptions";
 
 const exampleOptions = [
   {id: 1, value: "Option A"},
@@ -11,30 +12,6 @@ const exampleOptions = [
   {id: 3, value: "Option C"},
   {id: 4, value: "Option D"}
 ]
-
-interface PollOptionsProps {
-  options: { id: number; value: string; }[]
-}
-
-const PollOptions = ({options}: PollOptionsProps ) => {
-  return (
-    <>
-      {  options.length > 0 && (
-        options.map((option, i) => {
-          return <label 
-                      className="flex justify-between items-center max-w-2xl text-white gap-2"
-                      key={option.id}>
-                      <input 
-                        type="radio" 
-                        name="poll"
-                        value={option.value} 
-                      />
-                      {option.value}
-                  </label>
-      }))}
-    </>
-  )  
-}
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
