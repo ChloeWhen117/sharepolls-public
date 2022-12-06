@@ -1,6 +1,8 @@
+import Head from "next/head";
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+//import PlausibleProvider from "next-plausible";
 
 import { trpc } from "../utils/trpc";
 
@@ -10,8 +12,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const description =
+    "Web app for sharing polls";
+  const title = "Share Polls";
   return (
     <SessionProvider session={session}>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Component {...pageProps} />
     </SessionProvider>
   );
