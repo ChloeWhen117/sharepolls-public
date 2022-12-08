@@ -1,4 +1,4 @@
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "../../utils/trpc";
 
 interface PollOptionsProps {
     options: { id: number; value: string; }[]
@@ -24,7 +24,7 @@ export const PollOptions = () => {
       });
      
     if (isLoading) return <div className="flex text-white">Fetching messages...</div>;
-    if (!pollOptions || pollOptions?.length === 0) return <div className="flex text-white">Poll Not Found</div>;
+    if (!pollOptions || pollOptions?.length === 0) return <div className="flex text-white">No Public Polls Found</div>;
     return (
         <div className="flex max-w-2xl items-left ">
             <div className="flex flex-col flex-start">

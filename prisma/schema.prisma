@@ -27,12 +27,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?  @db.Text
-  access_token      String?  @db.Text
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?  @db.Text
+  id_token          String? @db.Text
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -68,22 +68,24 @@ model VerificationToken {
 }
 
 model PollVote {
-  id         String     @id @default(cuid())
-  user       User       @relation(fields: [userId], references: [id])
-  userId     String
-  votedFor   PollOption @relation(fields: [votedForId], references: [id])
-  votedForId String
-  Poll       Poll?      @relation(fields: [pollId], references: [id])
-  pollId     String?
+  id       String     @id @default(cuid())
+  user     User       @relation(fields: [userId], references: [id])
+  userId   String
+  option   PollOption @relation(fields: [optionId], references: [id])
+  optionId String
+  Poll     Poll?      @relation(fields: [pollId], references: [id])
+  pollId   String?
 }
 
 model PollOption {
-  id        String     @id @default(cuid())
-  createdAt DateTime   @default(now())
-  body      String
-  PollVote  PollVote[]
-  Poll      Poll?      @relation(fields: [pollId], references: [id])
-  pollId    String?
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  body     String
+  PollVote PollVote[]
+  Poll     Poll?      @relation(fields: [pollId], references: [id])
+  pollId   String?
 }
 
 model Poll {
@@ -91,7 +93,7 @@ model Poll {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   expires    DateTime
-  hidden     Boolean      @default(false)
+  private    Boolean      @default(false)
   title      String
   question   String
   options    PollOption[]

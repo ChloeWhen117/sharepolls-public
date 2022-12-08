@@ -1,13 +1,13 @@
 import { type NextPage } from "next";
-import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-
-import { trpc } from "../utils/trpc";
-import { PollOptions } from "./components/PollOptions/PollOptions";
-import { CreatePoll } from "./components/CreatePoll/CreatePoll";
+import { useRouter } from 'next/router';
+import { trpc } from "../utils/trpc"
+import { PollOptions } from "../components/PollOptions/PollOptions";
+import { MainLayout } from "../layouts/MainLayout"
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
+  const router = useRouter();
   /*
   const {
     data: pollOptions,
@@ -21,40 +21,32 @@ const Home: NextPage = () => {
   */
 
   return (
-    <>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] p-4">
-            Share Polls
-        </h1>
-        <div className="container flex flex-col items-center justify-center gap-12 p-24 bg-white/10">
+    <MainLayout 
+      actionsBar={
+        <>
+          <button
+            onClick={() => router.push('/profile')}
+            type="button"
+            className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-indigo-500 dark:hover:bg-indigo-500 dark:focus:ring-indigo-400"
+          >
+            Test
+          </button>
+          <button
+            onClick={() => router.push('/new')}
+            type="button"
+            className="disabled:bg-gray-300 focus:outline-none text-white bg-emerald-500 hover:bg-opacity-95 focus:ring-4 focus:ring-emerald-500 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-emerald-500 dark:focus:ring-emerald-500 inline-flex items-center text-center"
+          >
+            New Poll
+          </button>
+        </>
+
+        }
+      >
+        <div className="container flex flex-col items-center justify-center gap-12 p-24">
           <div className="flex" >
-            <div className="text-2xl text-center text-white">Insert Poll Question</div>
           </div>
-          <PollOptions />
-          <CreatePoll />
         </div>
-      </main>
-      <footer id="linksFooter" className="max-w-ws flex text-xl text-center item-center justify-center p-2 gap-4 bg-[#15162c]">
-          <Link 
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="/https://github.com/ChloeWhen117/sharecattv"
-          >
-            <div>Github</div>
-          </Link>
-          <Link 
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="/results"
-          >
-            <div>Results</div>
-          </Link>
-          <Link 
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="/about"
-          >
-            <div>About</div>
-          </Link>
-      </footer>
-    </>
+    </MainLayout>
   );
 };
 

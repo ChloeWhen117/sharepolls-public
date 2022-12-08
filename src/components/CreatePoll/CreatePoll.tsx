@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "../../utils/trpc";
 
 export const CreatePoll = () => {
     const maxOptionsLength = 6;
@@ -18,16 +18,18 @@ export const CreatePoll = () => {
                     (event: React.SyntheticEvent) => {
                         event.preventDefault();
 
-                        createPoll.mutate({
-                            question,
-                            title,
-                            options
-                        });
-                        setQuestion("");
-                        setTitle("");
-                        setOptions(Array(maxOptionsLength));
-                        setOptionsLength(1);
-                        event.target.reset();
+                        if (optionsLength > 1) {
+                            createPoll.mutate({
+                                question,
+                                title,
+                                options
+                            });
+                            setQuestion("");
+                            setTitle("");
+                            setOptions(Array(maxOptionsLength));
+                            setOptionsLength(1);
+                            event.target.reset();
+                        }
                 }, [])}
             >
                 <input
