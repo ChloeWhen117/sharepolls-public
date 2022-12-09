@@ -1,14 +1,15 @@
 import { useState, useCallback } from "react";
 import { trpc } from "../../utils/trpc";
+import { useUserId } from "../../hooks/useUserId";
 
 export const CreatePoll = () => {
     const maxOptionsLength = 6;
-
+    const { userId } = useUserId();
     const [question, setQuestion] =  useState("");
     const [title, setTitle] = useState("");
-    const [options, setOptions] = useState<string[]>(Array(maxOptionsLength));
+    const [options, setOptions] = useState<{body: string}[]>(Array(maxOptionsLength));
     const [optionsLength, setOptionsLength] = useState(1);
-    const createPoll = trpc.useMutation("polls.createPoll");
+    const createPoll = trpc.poll.createPoll.useMutation();
 
     return (
         <div className="flex max-w-2xl items-left ">
@@ -18,8 +19,9 @@ export const CreatePoll = () => {
                     (event: React.SyntheticEvent) => {
                         event.preventDefault();
 
-                        if (optionsLength > 1) {
+                        if (optionsLength > 1 && userId !== "") {
                             createPoll.mutate({
+                                authorId: userId,
                                 question,
                                 title,
                                 options
@@ -30,7 +32,7 @@ export const CreatePoll = () => {
                             setOptionsLength(1);
                             event.target.reset();
                         }
-                }, [])}
+                }, [optionsLength])}
             >
                 <input
                     type="text"
@@ -54,12 +56,12 @@ export const CreatePoll = () => {
                             <div className="flex gap-4">
                                 <input
                                     type="text"
-                                    value={options[idx]}
+                                    value={options[idx]?.body}
                                     placeholder={`Option ${idx + 1}: ...`}
                                     maxLength={100}
                                     onChange={(event) => {
                                         const newOptions = options;
-                                        newOptions[idx] = event.target.value;
+                                        newOptions[idx] = {body: event.target.value};
                                         setOptions(newOptions)
                                     }}
                                     className="px-4 py-2 rounded-md border-2 border-zinc-800 text-white bg-neutral-900 focus:outline-none"

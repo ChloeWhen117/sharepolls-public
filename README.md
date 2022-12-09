@@ -13,7 +13,7 @@ Setup
 
 1. Clone repo
 1. `npm install`
-1. Create `.env` file if one does not already exist
+1. Create `.env` file if one does not already exist ([example .env file here](https://github.com/ChloeWhen117/sharepolls-public/blob/master/.env.example))
 1. Add connection URLs for both database and shadow db to .env
 1. Initialize database - `npx prisma migrate dev`
 1. Run dev server `npm run dev`

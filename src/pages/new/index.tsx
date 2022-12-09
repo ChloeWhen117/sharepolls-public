@@ -1,31 +1,9 @@
 import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
-import { trpc } from "../utils/trpc"
-import { MainLayout } from "../layouts/MainLayout"
-
-const PublicPolls = () => {
-  const { data: publicPolls, isLoading }  = trpc.poll.getAll.useQuery(
-    undefined, // no input
-    {
-    refetchInterval: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  });
-  
-  if (isLoading) return <div className="flex text-white">Fetching messages...</div>;
-  if (!publicPolls || publicPolls?.length === 0) return <div className="flex text-white">No Public Polls Found</div>;
-  return (
-    <div className="flex max-w-2xl items-left ">
-        <div className="flex flex-col flex-start">
-            {  publicPolls?.length > 0 && (
-                publicPolls.map((poll, idx) => {
-                return <div> Test {idx} </div>
-            }))}
-        </div>
-    </div>
-)   
-}
+import { trpc } from "../../utils/trpc"
+import { MainLayout } from "../../layouts/MainLayout"
+import { CreatePoll } from "../../components/CreatePoll/CreatePoll"
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -33,27 +11,18 @@ const Home: NextPage = () => {
   return (
     <MainLayout 
       actionsBar={
-        <>
           <button
-            onClick={() => router.push('/profile')}
+            onClick={() => router.push('/')}
             type="button"
             className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-indigo-500 dark:hover:bg-indigo-500 dark:focus:ring-indigo-400"
           >
-            User Profile
+            Return Home
           </button>
-          <button
-            onClick={() => router.push('/new')}
-            type="button"
-            className="disabled:bg-gray-300 focus:outline-none text-white bg-emerald-500 hover:bg-opacity-95 focus:ring-4 focus:ring-emerald-500 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-emerald-500 dark:focus:ring-emerald-500 inline-flex items-center text-center"
-          >
-            New Poll
-          </button>
-        </>
         }
     >
         <div className="container flex flex-col items-center justify-center gap-12 p-24">
           <div className="flex" >
-            <PublicPolls />
+            <CreatePoll />
           </div>
         </div>
     </MainLayout>
