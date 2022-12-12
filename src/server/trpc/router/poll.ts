@@ -69,7 +69,7 @@ export const pollRouter = router({
                         expires: add(new Date(), {hours: 24})
                     }
                 });
-                return { success: true, poll: poll };
+                return poll;
             } catch (error) {
                 console.log(error);
             }

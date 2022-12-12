@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { trpc } from "../../utils/trpc";
 import { useUserId } from "../../hooks/useUserId";
 
@@ -9,14 +9,15 @@ export const CreatePoll = () => {
     const [title, setTitle] = useState("");
     const [options, setOptions] = useState<{body: string}[]>(Array(maxOptionsLength));
     const [optionsLength, setOptionsLength] = useState(1);
-    const createPoll = trpc.poll.createPoll.useMutation();
 
     return (
         <div className="flex max-w-2xl items-left ">
             <form
                 className="flex flex-col gap-2"
                 onSubmit={useCallback(
-                    (event: React.SyntheticEvent) => {
+                    (event: React.FormEvent) => {
+                        const createPoll = trpc.poll.createPoll.useMutation();
+
                         event.preventDefault();
 
                         if (optionsLength > 1 && userId !== "") {
@@ -30,9 +31,9 @@ export const CreatePoll = () => {
                             setTitle("");
                             setOptions(Array(maxOptionsLength));
                             setOptionsLength(1);
-                            event.target.reset();
+                            (event.target as HTMLFormElement).reset();
                         }
-                }, [optionsLength])}
+                }, [userId, optionsLength, options, title, question])}
             >
                 <input
                     type="text"
@@ -53,7 +54,10 @@ export const CreatePoll = () => {
                 <div className="flex text-white">Create Poll Options up to maximum of 6.</div>
                     {[...Array(optionsLength)].map((_, idx) => {
                         return (
-                            <div className="flex gap-4">
+                            <div 
+                                key={idx}
+                                className="flex gap-4"
+                            >
                                 <input
                                     type="text"
                                     value={options[idx]?.body}

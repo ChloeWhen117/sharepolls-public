@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { router, protectedProcedure, publicProcedure } from "../trpc";
+import { router, publicProcedure } from "../trpc";
 
 export const pollVoteRouter = router({
-    castVote: protectedProcedure
+    castVote: publicProcedure
         .input(
             z.object({
                 userId: z.string(),

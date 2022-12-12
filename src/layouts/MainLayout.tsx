@@ -12,7 +12,7 @@ export const MainLayout: React.FC<Props> = ({
 }) => {
   return (
     <>
-        <header className="flex flex-row justify-between mx-auto p-20">
+        <header className="max-w-6xl flex flex-row justify-between mx-auto px-20 pt-4">
             <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] p-4">
                 Share Polls
             </h1>
@@ -20,7 +20,7 @@ export const MainLayout: React.FC<Props> = ({
                 {actionsBar}
             </div>
         </header>
-        <main className="flex h-auto">
+        <main className="max-w-6xl h-screen rounded-xl flex bg-indigo-500 mx-auto my-4">
             {children}
         </main>
         <footer id="linksFooter" className="max-w-ws sticky top-[100vh] flex text-xl text-center item-center justify-center p-2 gap-4 bg-[#15162c]">

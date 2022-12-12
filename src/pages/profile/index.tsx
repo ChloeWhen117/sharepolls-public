@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { trpc } from "../../utils/trpc"
 import { MainLayout } from "../../layouts/MainLayout"
@@ -22,13 +21,13 @@ const UserPolls = () => {
           <div className="flex flex-col flex-start">
               {  userPolls?.length > 0 && (
                   userPolls.map((poll, idx) => {
-                  return <div> Test {idx} </div>
+                  return <div key={idx}> Test {idx} </div>
               }))}
           </div>
       </div>
   )   
   }
-
+/* eslint-disable  no-unused-vars */ 
 const Home: NextPage = () => {
   const router = useRouter();
 
@@ -56,27 +55,3 @@ const Home: NextPage = () => {
 // type OptionsFromServer = inferQueryResponse<"get-poll">["firstPoll"];
 
 export default Home;
-
-const AuthShowcase = () => {
-  const { data: sessionData } = useSession();
-
-  const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined },
-  );
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4 ">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => signOut() : () => signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};
