@@ -1,17 +1,42 @@
 /* eslint-disable */
-import { type RouterOutputs } from "../../utils/trpc";
-
+import { type RouterOutputs, trpc } from "@/utils/trpc";
+import { RefetchOptions, RefetchQueryFilters } from "@tanstack/react-query";
 type PollType = RouterOutputs["poll"]["createPoll"];
+import { useRouter } from "next/router";
 
-export const PollListCard: React.FC<{poll: PollType}> = (props) => {
-    const {poll} = props;
-    return (
-        <div 
-            className="flex w-full flex-col p-8 bg-white dark:hover:bg-white/90 shadow-md rounded-lg"
-            key={poll?.id}
-        >
-            <div className="text-gray-700 font-bold text-lg">{poll?.title}</div>
-            <div className="text-gray-700 font-bold text-lg">{poll?.question}</div>
-        </div>
-    )
-}
+type RefetchType = <TPageData>(
+  options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+) => any;
+
+export const PollListCard: React.FC<{
+  poll: PollType;
+  refetch: RefetchType;
+}> = (props) => {
+  const { poll, refetch } = props;
+  const deletePoll = trpc.poll.deletePoll.useMutation();
+  const router = useRouter();
+  const handleDelete = () => {
+    deletePoll.mutate(
+      { id: poll?.id || "" },
+      {
+        onSuccess: async (data) => {
+          refetch();
+        },
+      }
+    );
+  };
+  return (
+    <div
+      className="flex w-full justify-between rounded-lg bg-white p-8 shadow-md dark:hover:bg-white/90"
+      onClick={() => {
+        router.push(`/poll/${poll?.id}`);
+      }}
+    >
+      <div className="flex flex-col" key={poll?.id}>
+        <div className="text-lg font-bold text-gray-700">{poll?.title}</div>
+        <div className="text-lg font-bold text-gray-700">{poll?.question}</div>
+      </div>
+      <button onClick={handleDelete}>X</button>
+    </div>
+  );
+};

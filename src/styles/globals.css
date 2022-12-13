@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer components {
-    #__next {
-        @apply h-fit bg-gradient-to-b from-[#2e026d] to-[#15162c];
-    }
+  #__next {
+    @apply h-fit bg-gradient-to-b from-[#2e026d] to-[#15162c];
+  }
 }
