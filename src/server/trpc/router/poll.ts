@@ -5,7 +5,9 @@ import { router, publicProcedure } from "../trpc";
 export const pollRouter = router({
   getAll: publicProcedure.query(async ({ ctx }) => {
     try {
-      return await ctx.prisma.poll.findMany();
+      return await ctx.prisma.poll.findMany({
+        include: { voteCounts: true, options: { include: { PollVote: true } } },
+      });
     } catch (error) {
       console.log("error", error);
     }
@@ -19,6 +21,10 @@ export const pollRouter = router({
     .query(async ({ ctx, input }) => {
       try {
         return await ctx.prisma.poll.findMany({
+          include: {
+            voteCounts: true,
+            options: { include: { PollVote: true } },
+          },
           where: { authorId: input.authorId },
         });
       } catch (error) {
@@ -34,6 +40,10 @@ export const pollRouter = router({
     .query(async ({ ctx, input }) => {
       try {
         return await ctx.prisma.poll.findUnique({
+          include: {
+            voteCounts: true,
+            options: { include: { PollVote: true } },
+          },
           where: { id: input.id },
         });
       } catch (error) {

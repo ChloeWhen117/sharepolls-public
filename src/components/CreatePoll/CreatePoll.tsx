@@ -44,6 +44,7 @@ export const CreatePoll = () => {
         resolve(undefined);
       }, 3000);
     });
+
     if (optionsLength > 1 && userId !== "") {
       const { question, title, options } = data;
       createPoll.mutate({
