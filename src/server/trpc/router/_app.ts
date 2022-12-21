@@ -5,7 +5,7 @@ import { pollVoteRouter } from "./pollVote";
 export const appRouter = router({
   auth: authRouter,
   poll: pollRouter,
-  vote: pollVoteRouter,
+  pollVote: pollVoteRouter,
 });
 
 // export type definition of API

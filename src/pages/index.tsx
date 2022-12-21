@@ -4,6 +4,7 @@ import { trpc } from "@/utils/trpc";
 import { MainLayout } from "@/layouts/MainLayout";
 import React from "react";
 import { PollListCard } from "@/components/PollCard/PollListCard";
+import { Alert } from "@/components/common/Alert/Alert";
 
 const PublicPolls: React.FC = () => {
   const {
@@ -69,7 +70,15 @@ const Home: NextPage = () => {
         </>
       }
     >
-      <PublicPolls />
+      <div className="flex w-full flex-col">
+        <div className="flex px-24 py-8">
+          <Alert
+            type="info"
+            message="Known Bugs: Vote not updating immediately for page"
+          />
+        </div>
+        <PublicPolls />
+      </div>
     </MainLayout>
   );
 };

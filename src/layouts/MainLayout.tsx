@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 
-type Props = {
+interface Props {
   actionsBar: JSX.Element;
   children: React.ReactNode;
-};
+}
 
 export const MainLayout: React.FC<Props> = ({ actionsBar, children }) => {
   return (

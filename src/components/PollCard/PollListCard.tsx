@@ -1,17 +1,19 @@
 /* eslint-disable */
-import { type RouterOutputs, trpc } from "@/utils/trpc";
+import { trpc } from "@/utils/trpc";
 import { RefetchOptions, RefetchQueryFilters } from "@tanstack/react-query";
-type PollType = RouterOutputs["poll"]["createPoll"];
+import { type PollType } from "@/utils/common";
 import { useRouter } from "next/router";
 
 type RefetchType = <TPageData>(
   options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
 ) => any;
 
-export const PollListCard: React.FC<{
+interface Props {
   poll: PollType;
   refetch: RefetchType;
-}> = (props) => {
+}
+
+export const PollListCard: React.FC<Props> = (props) => {
   const { poll, refetch } = props;
   const deletePoll = trpc.poll.deletePoll.useMutation();
   const router = useRouter();
