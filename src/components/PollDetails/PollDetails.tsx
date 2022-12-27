@@ -29,21 +29,13 @@ export const PollDetails: React.FC<{ poll: PollType }> = (props) => {
   });
   const castVote = trpc.pollVote.castVote.useMutation();
   const submitLabel = userVoteRecord?.optionId ? "Update Vote" : "Submit Vote";
-
+  const totalVotes = poll?.voteCounts.length;
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     const input = {
       userId,
       pollId: poll?.id || "",
       optionId: data.optionId || "",
     };
-    await new Promise(async (resolve) => {
-      /*
-      await setTimeout(() => {
-        console.log(input);
-        resolve(undefined);
-      }, 3000);
-    });
-    */
     if (input.optionId !== "" && input.optionId !== "") {
       castVote.mutate(input);
     }
@@ -54,33 +46,56 @@ export const PollDetails: React.FC<{ poll: PollType }> = (props) => {
       <h2 className="mx-auto flex max-w-xs p-4 text-5xl font-bold text-white">
         Poll Details
       </h2>
-      <div className="flex p-4 font-bold text-white">{poll?.title}</div>
-      <div className="flex p-4 font-bold text-white">{poll?.question}</div>
+      <div className="rounded-md border-2 border-white">
+        <p className="flex p-4 font-bold text-white">{poll?.title}</p>
+        <div className="container mx-2 my-4 flex w-fit justify-center break-all rounded-md bg-gradient-to-b from-purple-700 to-[#15162c] py-4">
+          <p className="text-4xl font-bold text-white">"{poll?.question}"</p>
+        </div>
+      </div>
       <div className="flex gap-4 whitespace-nowrap p-4 font-bold text-white">
         <span className="flex">Share URL:</span>
         <div className="rounded-s w-full border-2 border-zinc-800 bg-neutral-900">
           {getPollUrl(poll?.id || "")}
         </div>
       </div>
-      <div className="flex flex-col p-8">
-        <div className="max-w-ws mx-auto flex p-4 font-bold text-white">
+      <div className="flex flex-col px-8">
+        <p className="max-w-ws mx-auto flex p-4 font-bold text-white">
           Vote for one
-        </div>
+        </p>
+        {userVoteRecord && (
+          <div className="py-4">
+            <DismissableAlert type="info" message="You have previously voted" />
+          </div>
+        )}
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           {poll &&
             poll?.options.map((option, idx) => {
+              const optionsVoteCount = option.PollVote.length;
+              const votePercentage = totalVotes
+                ? Math.floor((optionsVoteCount / totalVotes) * 100)
+                : 0;
               return (
-                <label key={`option_${option.id}`}>
-                  <div className="flex gap-2 border-2 border-white p-4 text-white">
+                <div
+                  className="flex flex-col border-2 border-white p-4 text-white"
+                  key={`option_${option.id}`}
+                >
+                  <div className="flex gap-2 py-2">
                     <input
                       type="radio"
                       id={`option${idx}`}
                       value={option?.id}
                       {...register("optionId")}
                     />
-                    {option?.body}
+                    <label className="flex break-all" htmlFor={`option${idx}`}>
+                      {option?.body}
+                    </label>
                   </div>
-                </label>
+                  {userVoteRecord && (
+                    <p className="bg-gradient-to-b from-purple-700 to-[#15162c] px-4">
+                      {votePercentage}% of users voted for this option
+                    </p>
+                  )}
+                </div>
               );
             })}
           <div className="flex items-center justify-center px-8 pt-8 text-white">

@@ -15,7 +15,7 @@ export const MainLayout: React.FC<Props> = ({ actionsBar, children }) => {
         </h1>
         <div className="flex items-end p-4">{actionsBar}</div>
       </header>
-      <main className="mx-auto my-4 flex h-screen max-w-6xl rounded-xl bg-indigo-500">
+      <main className="mx-auto my-4 flex min-h-screen max-w-6xl rounded-xl bg-indigo-500">
         {children}
       </main>
       <footer

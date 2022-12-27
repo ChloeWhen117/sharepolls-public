@@ -3,6 +3,7 @@ import { trpc } from "@/utils/trpc";
 import { RefetchOptions, RefetchQueryFilters } from "@tanstack/react-query";
 import { type PollType } from "@/utils/common";
 import { useRouter } from "next/router";
+import { useUserId } from "@/hooks/useUserId";
 
 type RefetchType = <TPageData>(
   options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
@@ -17,6 +18,8 @@ export const PollListCard: React.FC<Props> = (props) => {
   const { poll, refetch } = props;
   const deletePoll = trpc.poll.deletePoll.useMutation();
   const router = useRouter();
+  const { userId } = useUserId();
+
   const handleDelete = () => {
     deletePoll.mutate(
       { id: poll?.id || "" },
@@ -38,7 +41,7 @@ export const PollListCard: React.FC<Props> = (props) => {
         <div className="text-lg font-bold text-gray-700">{poll?.title}</div>
         <div className="text-lg font-bold text-gray-700">{poll?.question}</div>
       </div>
-      <button onClick={handleDelete}>X</button>
+      {poll?.authorId === userId && <button onClick={handleDelete}>X</button>}
     </div>
   );
 };

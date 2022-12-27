@@ -1,12 +1,18 @@
+import React from "react";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { trpc } from "@/utils/trpc";
 import { MainLayout } from "@/layouts/MainLayout";
 import { useUserId } from "@/hooks/useUserId";
+import { PollListCard } from "@/components/PollCard/PollListCard";
 
-const UserPolls = () => {
+const UserPolls: React.FC = () => {
   const { userId } = useUserId();
-  const { data: userPolls, isLoading } = trpc.poll.getByAuthorId.useQuery(
+  const {
+    data: userPolls,
+    isLoading,
+    refetch,
+  } = trpc.poll.getByAuthorId.useQuery(
     { authorId: userId },
     {
       refetchInterval: false,
@@ -16,20 +22,31 @@ const UserPolls = () => {
   );
 
   if (isLoading)
-    return <div className="flex text-white">Fetching messages...</div>;
-  if (!userPolls || userPolls?.length === 0)
-    return <div className="flex text-white">No User Polls Found</div>;
-  return (
-    <div className="items-left flex max-w-2xl ">
-      <div className="flex-start flex flex-col">
-        {userPolls?.length > 0 &&
-          userPolls.map((poll, idx) => {
-            return <div key={idx}> Test {idx} </div>;
-          })}
+    return (
+      <div className="mx-auto flex justify-center text-white">
+        Fetching messages...
       </div>
+    );
+  if (!userPolls || userPolls?.length === 0)
+    return (
+      <div className="mx-auto flex justify-center text-white">
+        No User Polls Found
+      </div>
+    );
+  return (
+    <div className="container flex flex-col gap-4 p-24">
+      {userPolls?.length > 0 &&
+        userPolls.map((poll) => {
+          return (
+            <React.Fragment key={poll.id}>
+              <PollListCard poll={poll} refetch={refetch} />
+            </React.Fragment>
+          );
+        })}
     </div>
   );
 };
+
 /* eslint-disable  no-unused-vars */
 const Home: NextPage = () => {
   const router = useRouter();
@@ -46,15 +63,11 @@ const Home: NextPage = () => {
         </button>
       }
     >
-      <div className="container flex flex-col items-center justify-center gap-12 p-24">
-        <div className="flex">
-          <UserPolls />
-        </div>
+      <div className="flex w-full flex-col">
+        <UserPolls />
       </div>
     </MainLayout>
   );
 };
-
-// type OptionsFromServer = inferQueryResponse<"get-poll">["firstPoll"];
 
 export default Home;

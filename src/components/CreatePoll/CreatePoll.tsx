@@ -38,14 +38,6 @@ export const CreatePoll = () => {
   };
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-    /*
-    await new Promise(async (resolve) => {
-      await setTimeout(() => {
-        console.log(data);
-        resolve(undefined);
-      }, 3000);
-    });
-    */
     if (optionsLength > 1 && userId !== "") {
       const { question, title, options } = data;
       createPoll.mutate({
