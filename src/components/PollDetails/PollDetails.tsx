@@ -27,6 +27,7 @@ export const PollDetails: React.FC<{ poll: PollType }> = (props) => {
     defaultValues: { optionId: userVoteRecord?.optionId },
     resolver: zodResolver(FormSchema),
   });
+
   const castVote = trpc.pollVote.castVote.useMutation();
   const submitLabel = userVoteRecord?.optionId ? "Update Vote" : "Submit Vote";
   const totalVotes = poll?.voteCounts.length;
@@ -48,8 +49,10 @@ export const PollDetails: React.FC<{ poll: PollType }> = (props) => {
       </h2>
       <div className="rounded-md border-2 border-white">
         <p className="flex p-4 font-bold text-white">{poll?.title}</p>
-        <div className="container mx-2 my-4 flex w-fit justify-center break-all rounded-md bg-gradient-to-b from-purple-700 to-[#15162c] py-4">
-          <p className="text-4xl font-bold text-white">"{poll?.question}"</p>
+        <div className="container my-4 flex justify-center">
+          <p className="w-fit max-w-xl break-all rounded-md bg-gradient-to-b from-purple-700 to-[#15162c] p-4 text-4xl font-bold text-white">
+            "{poll?.question}"
+          </p>
         </div>
       </div>
       <div className="flex gap-4 whitespace-nowrap p-4 font-bold text-white">
