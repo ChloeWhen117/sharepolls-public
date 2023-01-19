@@ -1,3 +1,5 @@
+# Update. As of 1/9/2023 this public repo will no longer be updated.
+
 # Share Polls App
 
 This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
