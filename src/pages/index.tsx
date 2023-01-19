@@ -3,15 +3,11 @@ import { useRouter } from "next/router";
 import { trpc } from "@/utils/trpc";
 import { MainLayout } from "@/layouts/MainLayout";
 import React from "react";
-import { PollListCard } from "@/components/PollCard/PollListCard";
 import { Alert } from "@/components/common/Alert/Alert";
+import { PollsTable } from "@/components/PollsTable/PollsTable";
 
 const PublicPolls: React.FC = () => {
-  const {
-    data: publicPolls,
-    isLoading,
-    refetch,
-  } = trpc.poll.getAll.useQuery(
+  const { data: publicPolls, isLoading } = trpc.poll.getAll.useQuery(
     undefined, // no input
     {
       refetchInterval: false,
@@ -32,18 +28,7 @@ const PublicPolls: React.FC = () => {
         No Public Polls Found
       </div>
     );
-  return (
-    <div className="container flex flex-col gap-4 p-24">
-      {publicPolls?.length > 0 &&
-        publicPolls.map((poll) => {
-          return (
-            <React.Fragment key={poll.id}>
-              <PollListCard poll={poll} refetch={refetch} />
-            </React.Fragment>
-          );
-        })}
-    </div>
-  );
+  return <PollsTable polls={publicPolls} />;
 };
 
 const Home: NextPage = () => {
@@ -56,7 +41,7 @@ const Home: NextPage = () => {
           <button
             onClick={() => router.push("/profile")}
             type="button"
-            className="mr-2 inline-flex items-center rounded-lg p-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 dark:bg-indigo-500 dark:hover:bg-indigo-500 dark:focus:ring-indigo-400"
+            className="mr-2 inline-flex items-center rounded-lg bg-blue-400 p-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 dark:bg-blue-400 dark:hover:bg-blue-400 dark:focus:ring-blue-400"
           >
             User Profile
           </button>
@@ -70,14 +55,16 @@ const Home: NextPage = () => {
         </>
       }
     >
-      <div className="flex w-full flex-col">
-        <div className="flex px-24 py-8">
-          <Alert
-            type="info"
-            message="Known Bugs: Vote not updating immediately for page"
-          />
+      <div className="flex h-full w-full justify-center">
+        <div className="flex h-full w-full max-w-5xl flex-col">
+          <div className="flex px-4 py-8">
+            <Alert
+              type="info"
+              message="Known Bugs: Vote not updating immediately for page"
+            />
+          </div>
+          <PublicPolls />
         </div>
-        <PublicPolls />
       </div>
     </MainLayout>
   );

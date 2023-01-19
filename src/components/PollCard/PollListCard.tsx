@@ -37,11 +37,18 @@ export const PollListCard: React.FC<Props> = (props) => {
         router.push(`/poll/${poll?.id}`);
       }}
     >
-      <div className="flex flex-col" key={poll?.id}>
-        <div className="text-lg font-bold text-gray-700">{poll?.title}</div>
-        <div className="text-lg font-bold text-gray-700">{poll?.question}</div>
+      <div
+        className="flex w-full flex-col overflow-hidden text-ellipsis whitespace-nowrap text-lg font-bold text-gray-700"
+        key={poll?.id}
+      >
+        <div className="md: max-w-xs max-w-xl">{poll?.title}</div>
+        <div className="md: max-w-xs max-w-xl">{poll?.question}</div>
       </div>
-      {poll?.authorId === userId && <button onClick={handleDelete}>X</button>}
+      {poll?.authorId === userId && (
+        <button className="p-4" onClick={handleDelete}>
+          X
+        </button>
+      )}
     </div>
   );
 };

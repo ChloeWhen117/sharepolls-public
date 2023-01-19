@@ -4,15 +4,11 @@ import { useRouter } from "next/router";
 import { trpc } from "@/utils/trpc";
 import { MainLayout } from "@/layouts/MainLayout";
 import { useUserId } from "@/hooks/useUserId";
-import { PollListCard } from "@/components/PollCard/PollListCard";
+import { PollsTable } from "@/components/PollsTable/PollsTable";
 
 const UserPolls: React.FC = () => {
   const { userId } = useUserId();
-  const {
-    data: userPolls,
-    isLoading,
-    refetch,
-  } = trpc.poll.getByAuthorId.useQuery(
+  const { data: userPolls, isLoading } = trpc.poll.getByAuthorId.useQuery(
     { authorId: userId },
     {
       refetchInterval: false,
@@ -33,18 +29,7 @@ const UserPolls: React.FC = () => {
         No User Polls Found
       </div>
     );
-  return (
-    <div className="container flex flex-col gap-4 p-24">
-      {userPolls?.length > 0 &&
-        userPolls.map((poll) => {
-          return (
-            <React.Fragment key={poll.id}>
-              <PollListCard poll={poll} refetch={refetch} />
-            </React.Fragment>
-          );
-        })}
-    </div>
-  );
+  return <PollsTable polls={userPolls} />;
 };
 
 /* eslint-disable  no-unused-vars */
@@ -57,14 +42,16 @@ const Home: NextPage = () => {
         <button
           onClick={() => router.push("/")}
           type="button"
-          className="mr-2 inline-flex items-center rounded-lg p-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 dark:bg-indigo-500 dark:hover:bg-indigo-500 dark:focus:ring-indigo-400"
+          className="inline-flex items-center rounded-lg bg-blue-400 p-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 dark:bg-blue-400 dark:hover:bg-blue-400 dark:focus:ring-blue-400"
         >
           Return Home
         </button>
       }
     >
-      <div className="flex w-full flex-col">
-        <UserPolls />
+      <div className="flex w-full justify-center">
+        <div className="flex w-full max-w-5xl flex-col">
+          <UserPolls />
+        </div>
       </div>
     </MainLayout>
   );

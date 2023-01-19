@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 interface Props {
   actionsBar: JSX.Element;
@@ -9,25 +8,30 @@ interface Props {
 export const MainLayout: React.FC<Props> = ({ actionsBar, children }) => {
   return (
     <>
-      <header className="mx-auto flex max-w-6xl flex-row justify-between px-20 pt-4">
-        <h1 className="p-4 text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Share Polls
-        </h1>
-        <div className="flex items-end p-4">{actionsBar}</div>
+      <header className="flex flex-row justify-center pt-4">
+        <div className="flex w-full max-w-5xl justify-between">
+          <h1 className="p-4 text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+            Share Polls
+          </h1>
+        </div>
       </header>
-      <main className="mx-auto my-4 flex min-h-screen max-w-6xl rounded-xl bg-indigo-500">
-        {children}
+      <main className="flex min-h-[95vh] justify-center">
+        <div className="my-4 flex min-h-[800px] w-full max-w-5xl flex-col bg-indigo-500">
+          <div className="flex flex w-full max-w-5xl justify-end">
+            <div className="flex p-4">{actionsBar}</div>
+          </div>
+          {children}
+        </div>
       </main>
-      <footer
-        id="linksFooter"
-        className="max-w-ws item-center sticky top-[100vh] flex justify-center gap-4 bg-[#15162c] p-2 text-center text-xl"
-      >
-        <Link
-          className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-          href="https://github.com/ChloeWhen117/sharepolls-public"
+      <footer className="min-h-20 flex w-screen justify-center bg-slate-400">
+        <div
+          id="wrap"
+          className="flex w-full max-w-5xl flex-col items-center p-4 sm:flex-row"
         >
-          <div>Github</div>
-        </Link>
+          <div className="flex w-full">
+            <h3>© 2023 Copyright Chloe Nguyen. All rights reserved</h3>
+          </div>
+        </div>
       </footer>
     </>
   );
