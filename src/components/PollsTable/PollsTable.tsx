@@ -49,6 +49,18 @@ export const PollsTable: React.FC<{
     return result;
   }
 
+  const hideQuestionColumn = () => {
+    if (gridRef?.current?.columnApi) {
+      gridRef.current.columnApi.setColumnVisible("question", true);
+      gridRef?.current.api.sizeColumnsToFit();
+
+      if (window.innerWidth < 786) {
+        gridRef.current.columnApi.setColumnVisible("question", false);
+        gridRef?.current.api.sizeColumnsToFit();
+      }
+    }
+  };
+
   // Each Column Definition results in one Column.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [columnDefs, setColumnDefs] = useState([
@@ -94,6 +106,12 @@ export const PollsTable: React.FC<{
     setRowData(polls);
   }, [polls]);
 
+  //mounted
+  useEffect(() => {
+    hideQuestionColumn();
+    window.addEventListener("resize", hideQuestionColumn);
+  }, []);
+
   // define a column type (you can define as many as you like)
   const columnTypes = {
     titleColumn: {
@@ -117,7 +135,7 @@ export const PollsTable: React.FC<{
   const onGridReady = useCallback(() => {
     //@ts-ignore: gridRef
     gridRef?.current.api.sizeColumnsToFit(); // eslint-disable-line
-    gridRef.current.columnApi.applyColumnState({
+    gridRef?.current.columnApi.applyColumnState({
       state: [
         {
           colId: "createdAt",
@@ -131,21 +149,84 @@ export const PollsTable: React.FC<{
     };
   }, []);
 
+  /*
+  const onBtFirst = useCallback(() => {
+    gridRef.current.api.paginationGoToFirstPage();
+  }, []);
+
+  const onBtLast = useCallback(() => {
+    gridRef.current.api.paginationGoToLastPage();
+  }, []);
+
+  const onBtNext = useCallback(() => {
+    gridRef.current.api.paginationGoToNextPage();
+  }, []);
+
+  const onBtPrevious = useCallback(() => {
+    gridRef.current.api.paginationGoToPreviousPage();
+  }, []);
+
+  const onBtPageFive = useCallback(() => {
+    // we say page 4, as the first page is zero
+    gridRef.current.api.paginationGoToPage(4);
+  }, []);
+
+  const onBtPageFifty = useCallback(() => {
+    // we say page 49, as the first page is zero
+    gridRef.current.api.paginationGoToPage(49);
+  }, []);
+  */
   return (
-    <div className="container flex h-full max-h-[800px] min-h-[300px] w-full flex-col">
-      <div className="ag-theme-alpine-dark h-full w-full">
-        <AgGridReact
-          //@ts-ignore: gridRef
-          ref={gridRef} // Ref for accessing Grid's API
-          rowData={rowData} // Row Data for Rows
-          columnDefs={columnDefs} // Column Defs for Columns
-          defaultColDef={defaultColDef} // Default Column Properties
-          columnTypes={columnTypes}
-          animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-          rowSelection="multiple" // Options - allows click selection of rows
-          onCellClicked={cellClickedListener} // Optional - registering for Grid Event
-          onGridReady={onGridReady}
-        />
+    <div className="container flex h-full w-full flex-col">
+      {/*
+      <div className="example-header">
+        <div>
+          <button onClick={onBtFirst}>To First</button>
+          <button onClick={onBtLast} id="btLast">
+            To Last
+          </button>
+          <button onClick={onBtPrevious}>To Previous</button>
+          <button onClick={onBtNext}>To Next</button>
+          <button onClick={onBtPageFive}>To Page 5</button>
+          <button onClick={onBtPageFifty}>To Page 50</button>
+        </div>
+        <div style={{ marginTop: "6px" }}>
+          <span className="label">Last Page Found:</span>
+          <span className="value" id="lbLastPageFound">
+            -
+          </span>
+          <span className="label">Page Size:</span>
+          <span className="value" id="lbPageSize">
+            -
+          </span>
+          <span className="label">Total Pages:</span>
+          <span className="value" id="lbTotalPages">
+            -
+          </span>
+          <span className="label">Current Page:</span>
+          <span className="value" id="lbCurrentPage">
+            -
+          </span>
+        </div>
+      </div>
+      */}
+      <div className="h-full max-h-[800px] min-h-[300px] w-full">
+        <div className="ag-theme-alpine-dark h-full w-full">
+          <AgGridReact
+            //@ts-ignore: gridRef
+            ref={gridRef} // Ref for accessing Grid's API
+            rowData={rowData} // Row Data for Rows
+            columnDefs={columnDefs} // Column Defs for Columns
+            defaultColDef={defaultColDef} // Default Column Properties
+            columnTypes={columnTypes}
+            animateRows={true} // Optional - set to 'true' to have rows animate when sorted
+            rowSelection="multiple" // Options - allows click selection of rows
+            onCellClicked={cellClickedListener} // Optional - registering for Grid Event
+            onGridReady={onGridReady}
+            paginationAutoPageSize={true}
+            pagination={true}
+          />
+        </div>
       </div>
     </div>
   );

@@ -54,7 +54,7 @@
 }
 
 .alert.error .inner {
-  background-color: rgb(185, 74, 72);
+  @apply bg-red-800;
 }
 
 .alert.error .inner,
@@ -63,7 +63,7 @@
 }
 
 .alert.success .inner {
-  background-color: rgb(70, 136, 71);
+  @apply bg-green-800;
 }
 
 .alert.success .inner,
@@ -72,7 +72,7 @@
 }
 
 .alert.info .inner {
-  background-color: rgb(58, 135, 173);
+  @apply bg-blue-800;
 }
 
 .alert.info .inner,
@@ -81,10 +81,18 @@
 }
 
 .alert.warning .inner {
-  background-color: rgb(192, 152, 83);
+  @apply bg-yellow-400;
 }
 
 .alert.warning .inner,
 .alert.warning .close {
-  color: white;
+  color: black;
+}
+
+#nav-item {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 56px;
+  height: 57px;
+  @apply items-center p-4 hover:underline;
 }

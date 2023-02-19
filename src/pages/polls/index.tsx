@@ -1,15 +1,13 @@
-import React from "react";
 import { type NextPage } from "next";
 import { trpc } from "@/utils/trpc";
 import { MainLayout } from "@/layouts/MainLayout";
-import { useUserId } from "@/hooks/useUserId";
-import { PollsTable } from "@/components/PollsTable/PollsTable";
+import React from "react";
 import { Alert } from "@/components/common/Alert/Alert";
+import { PollsTable } from "@/components/PollsTable/PollsTable";
 
-const UserPolls: React.FC = () => {
-  const { userId } = useUserId();
-  const { data: userPolls, isLoading } = trpc.poll.getByAuthorId.useQuery(
-    { authorId: userId },
+const PublicPolls: React.FC = () => {
+  const { data: publicPolls, isLoading } = trpc.poll.getAll.useQuery(
+    undefined, // no input
     {
       refetchInterval: false,
       refetchOnReconnect: false,
@@ -23,17 +21,16 @@ const UserPolls: React.FC = () => {
         Fetching messages...
       </div>
     );
-  if (!userPolls || userPolls?.length === 0)
+  if (!publicPolls || publicPolls?.length === 0)
     return (
       <div className="mx-auto flex justify-center text-white">
-        No User Polls Found
+        No Public Polls Found
       </div>
     );
-  return <PollsTable polls={userPolls} />;
+  return <PollsTable polls={publicPolls} />;
 };
 
-/* eslint-disable  no-unused-vars */
-const Home: NextPage = () => {
+const Polls: NextPage = () => {
   return (
     <MainLayout
       alerts={
@@ -43,13 +40,13 @@ const Home: NextPage = () => {
         />
       }
     >
-      <div className="flex w-full justify-center">
-        <div className="flex w-full max-w-5xl flex-col">
-          <UserPolls />
+      <div className="flex h-full w-full justify-center">
+        <div className="flex h-full w-full max-w-5xl flex-col">
+          <PublicPolls />
         </div>
       </div>
     </MainLayout>
   );
 };
 
-export default Home;
+export default Polls;

@@ -6,6 +6,15 @@
   "plugins": ["@typescript-eslint"],
   "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   "rules": {
-    "@typescript-eslint/consistent-type-imports": "warn"
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-nocheck": "allow-with-description",
+        "ts-ignore": "allow-with-description",
+        "no-empty-function": "off"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }

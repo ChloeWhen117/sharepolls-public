@@ -64,7 +64,7 @@ export const PollDetails: React.FC<{
           </div>
           <div className="flex w-full justify-center">
             <div className="flex w-full max-w-2xl flex-col rounded-md border-2 border-white bg-slate-200/10 p-4">
-              <p className="flex w-fit break-all rounded-md text-4xl font-bold text-white">
+              <p className="flex w-fit break-words rounded-md text-4xl font-bold text-white">
                 {!isLoading ? `"${poll?.question}"` : "Loading Poll Details"}
               </p>
               <div className="flex flex-col">
